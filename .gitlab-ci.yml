@@ -1,0 +1,17 @@
+
+stages:
+  - install
+
+.only-default: &only-default
+only:
+  - master
+  - merge_requests
+
+install:
+  <<: *only-default
+  stage: install
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
