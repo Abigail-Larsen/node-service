@@ -1,0 +1,13 @@
+{
+  "name": "node-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yabbbb/node-service.git",
+  "author": "Abigail <abigailthelin@workfront.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.4.0"
+  }
+}
