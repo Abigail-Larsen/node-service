@@ -1,4 +1,5 @@
-var users = [
+
+module.exports = [
     {
       id: 1,
       name: 'Brian',
@@ -29,4 +30,4 @@ var users = [
       age: '25',
       shark: 'Hammerhead Shark'
     }
-  ];
+];
