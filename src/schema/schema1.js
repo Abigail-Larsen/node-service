@@ -2,15 +2,15 @@ var { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
 
-    extend type Query {
-        user2(id: Int!): Dog
+    type Query {
+        user(id: Int!): Friend
     },
 
-    type Dog {
+    type Friend {
         id: Int
         name: String
         age: Int
-        breed: String
+        birthday: String
     }
 
 `);
