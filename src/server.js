@@ -1,40 +1,17 @@
 var express = require('express');
+var normalizePort = require('express')
 var { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/index');
+const users = require('./dummydata')
+const axios = require('axios')
+var testAPIRouter = require("./testAPI");
+var cors = require("cors");
 
-// Sample users
-var users = [
-  {
-    id: 1,
-    name: 'Brian',
-    age: '21',
-    shark: 'Great White Shark'
-  },
-  {
-    id: 2,
-    name: 'Kim',
-    age: '22',
-    shark: 'Whale Shark'
-  },
-  {
-    id: 3,
-    name: 'Faith',
-    age: '23',
-    shark: 'Hammerhead Shark'
-  },
-  {
-    id: 4,
-    name: 'Joseph',
-    age: '23',
-    shark: 'Tiger Shark'
-  },
-  {
-    id: 5,
-    name: 'Joy',
-    age: '25',
-    shark: 'Hammerhead Shark'
-  }
-];
+const getBreeds =  () => {
+  return axios.get('https://dog.ceo/api/breeds/list/all').then(data => {
+    return data.data
+  })
+}
 
 // Return a single user (based on id)
 var getUser = function(args) {
@@ -72,10 +49,15 @@ var root = {
 
 // Create an express server and a GraphQL endpoint
 var app = express();
+var port = normalizePort(process.env.PORT || 9000);
 
+app.use(cors());
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,
   graphiql: true, 
 }));
-app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'));
+app.use("/testAPI", testAPIRouter);
+
+app.set('port', port)
+app.listen(9000, () => console.log('Now browse to localhost:9000/graphql'));
