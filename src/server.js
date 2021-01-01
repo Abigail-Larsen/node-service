@@ -4,7 +4,6 @@ var { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/index');
 const users = require('./dummydata')
 const axios = require('axios')
-var testAPIRouter = require("./testAPI");
 var cors = require("cors");
 
 const getBreeds =  () => {
@@ -16,7 +15,6 @@ const getBreeds =  () => {
 // Return a single user (based on id)
 var getUser = async function(args) {
   const foo = await getBreeds()
-  console.log('foo', foo)
   var userID = args.id;
   return users.filter(user => user.id == userID)[0];
 }
@@ -35,7 +33,21 @@ app.use('/graphql', graphqlHTTP({
   rootValue: root,
   graphiql: true, 
 }));
-app.use("/testAPI", testAPIRouter);
+;
+
+app.use(express.json()) 
+app.use (express.urlencoded({extended: false}))
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+ });
+ 
+app.post('/sendPhotos', (req, res) => {
+  console.log('res', req.body)
+  res.send('hit this homepage')
+})
 
 app.set('port', port)
 app.listen(9000, () => console.log('Now browse to localhost:9000/graphql'));
