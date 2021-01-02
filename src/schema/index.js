@@ -2,7 +2,8 @@ var { buildSchema } = require('graphql');
 
 var foo = buildSchema(`
   type Query {
-    user(id: Int!): Int
+    user(id: Int!): Person
+    photos: Photo
   },
   type Person {
     id: Int
