@@ -19,5 +19,5 @@ var foo = buildSchema(`
   }
 `);
 
-module.exports = foo
+module.exports = foo;
 
