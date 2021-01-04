@@ -4,6 +4,7 @@ var normalizePort = require('express')
 var { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/index');
 const root = require('./root')
+var multer = require('multer')
 var cors = require("cors");
 var bodyParser = require('body-parser'); 
 var request = require('request-promise'); 
@@ -14,9 +15,10 @@ var port = normalizePort(process.env.PORT || 9000);
 
 app.use(cors());
 app.use(express.json()) 
-app.use (express.urlencoded({extended: false}))
-app.use(bodyParser.urlencoded({ extended: false })); 
-
+app.use(express.urlencoded({extended: false}))
+app.use(bodyParser.text());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -30,11 +32,27 @@ app.use('/graphql', graphqlHTTP({
 }));
 ;
 
- 
-app.post('/sendPhotos', (req, res) => {
-  console.log('res', req.body)
-  res.send('hit this homepage')
-})
+app.post('/sendPhotos',function(req,res){
+  console.log("hit")
+  var storage = multer.diskStorage({
+      destination: './tmpFileStorage'
+  });
+  var upload = multer({ storage : storage}).any();
+
+  upload(req,res,function(err) {
+      if(err) {
+          console.log(err);
+          return res.end("Error uploading file.");
+      } else {
+         console.log(req.body);
+         req.files.forEach( function(f) {
+           console.log(f);
+           // and move file to final destination...
+         });
+         res.end("File has been uploaded");
+      }
+  });
+});
  
 app.get('/postdatatoFlask', async function (req, res) { 
     var data = {
