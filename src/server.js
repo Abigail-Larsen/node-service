@@ -19,6 +19,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(bodyParser.text());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
+app.use('/static/category/', express.static(__dirname+'/public/assets/category_pic/'));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -33,9 +34,8 @@ app.use('/graphql', graphqlHTTP({
 ;
 
 app.post('/sendPhotos',function(req,res){
-  console.log("hit")
   var storage = multer.diskStorage({
-      destination: './tmpFileStorage'
+    destination: './static/category/'
   });
   var upload = multer({ storage : storage}).any();
 
@@ -46,7 +46,7 @@ app.post('/sendPhotos',function(req,res){
       } else {
          console.log(req.body);
          req.files.forEach( function(f) {
-           console.log(f);
+           console.log('files',f);
            // and move file to final destination...
          });
          res.end("File has been uploaded");

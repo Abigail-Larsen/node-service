@@ -1,20 +1,26 @@
 
-var request = require('request-promise'); 
-const foo = () => {
+var request = require('request-promise');
+const fs = require('fs');
 
+const filterCategory = () => {
+    console.log('wait')
+    fs.readdir(__dirname+'/category', (error, files) => {
+        var imgFiles = [];
+        files.forEach(file => {
+                var imgpath = __dirname + '/imgs/' + file;
+                imgFiles.push(imgpath);
+        })
+        console.log('should come first',imgFiles)
+        return imgFiles
+    })
 }
-    
 
 const getPhotos = async () => {
-    var data = {
-        data1: "foo", 
-        data2: "bar" 
-    } 
- 
+
     var options = { 
         method: 'POST', 
         uri: 'http://127.0.0.1:5000/postdata', 
-        body: data, 
+        body: __dirname + '/' + 'static/category/0acd13b832a3adb3b5260facc119c3c6',
         json: true 
     }; 
      
@@ -29,7 +35,7 @@ const getPhotos = async () => {
     });
 
     return {
-      name: JSON.stringify(returndata.newdata),
+      name: __dirname + '/' + 'static/category/0acd13b832a3adb3b5260facc119c3c6',
       size:123,
       date:'1234'
     }
